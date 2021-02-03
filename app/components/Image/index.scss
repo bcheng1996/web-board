@@ -1,0 +1,26 @@
+@import '../../main.scss';
+
+.ImageContainer {
+  display: inline-block;
+
+  .outer_container {
+    @include theme-aware('background', 'color-background');
+    border-radius: 2px;
+    margin: 1rem;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+      0 3px 6px rgba(0, 0, 0, 0.23);
+
+    .inner_container {
+      padding: 0px;
+
+      &.frame {
+        padding: 10px;
+      }
+
+      .image {
+        width: 100%;
+      }
+    }
+  }
+}

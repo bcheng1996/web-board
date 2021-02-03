@@ -12,17 +12,29 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import Button from '@material-ui/core/Button';
 
-import GlobalStyle from '../../global-styles';
+import '../../global-styles.scss';
 
 export default function App() {
+  const handleChangeTheme = () => {
+    const currentTheme = document.documentElement.className;
+    document.documentElement.className = '';
+
+    if (currentTheme === 'theme-light') {
+      document.documentElement.classList.add(`theme-dark`);
+    } else {
+      document.documentElement.classList.add(`theme-light`);
+    }
+  };
+
   return (
     <div>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
-      <GlobalStyle />
+      <Button onClick={handleChangeTheme}>Change Theme</Button>
     </div>
   );
 }
