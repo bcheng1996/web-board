@@ -34,7 +34,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
-      <Button onClick={handleChangeTheme}>Change Theme</Button>
+      <Button style={{ position: 'absolute', bottom: 10, right: 10 }} onClick={handleChangeTheme}>Change Theme</Button>
     </div>
   );
 }

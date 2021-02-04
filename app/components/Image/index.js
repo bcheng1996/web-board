@@ -6,7 +6,7 @@ import PlaceHolderImage from './default-placeholder-image.png';
 import './index.scss';
 
 function Image(props) {
-  const { width = '100px', height = '100px', frame = true } = props;
+  const { width, height, frame = true } = props;
 
   return (
     <div className="ImageContainer">
