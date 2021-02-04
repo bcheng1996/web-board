@@ -27,7 +27,7 @@ export default class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    this.grid = GridStack.init({ minRow: 9, float: true });
+    this.grid = GridStack.init({ minRow: 3, float: true });
   }
 
   componentDidUpdate() {
