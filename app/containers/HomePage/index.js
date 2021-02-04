@@ -88,7 +88,7 @@ export default class HomePage extends React.Component {
         <div className="grid-stack">
           {this.renderWidgets()}
         </div>
-        <Button onClick={this.addWidget}>Add Widget</Button>
+        <Button className='addWidget' onClick={this.addWidget}>Add Widget</Button>
       </div>
     );
   }
