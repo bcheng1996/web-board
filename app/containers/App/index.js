@@ -17,24 +17,12 @@ import Button from '@material-ui/core/Button';
 import '../../global-styles.scss';
 
 export default function App() {
-  const handleChangeTheme = () => {
-    const currentTheme = document.documentElement.className;
-    document.documentElement.className = '';
-
-    if (currentTheme === 'theme-light') {
-      document.documentElement.classList.add(`theme-dark`);
-    } else {
-      document.documentElement.classList.add(`theme-light`);
-    }
-  };
-
   return (
     <div>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
-      <Button style={{ position: 'absolute', bottom: 10, right: 10 }} onClick={handleChangeTheme}>Change Theme</Button>
     </div>
   );
 }

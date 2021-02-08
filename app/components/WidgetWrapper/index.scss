@@ -1,0 +1,13 @@
+@import '../../main.scss';
+
+.WidgetWrapper {
+  height: 100%;
+  width: 100%;
+  display: inherit;
+
+  .toolbar {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+  }
+}
