@@ -12,6 +12,8 @@ import Button from '@material-ui/core/Button';
 import { GridStack } from 'gridstack';
 import Image from '../../components/Image';
 import 'gridstack/dist/gridstack.min.css';
+
+import { WIDGET_DEFAULT_HEIGHT } from './constants';
 import 'gridstack/dist/h5/gridstack-dd-native';
 import './style.scss';
 
@@ -22,6 +24,7 @@ export default class HomePage extends React.Component {
     this.state = {
       currId: 0,
       widgets: [],
+      widgetsLocked: false,
       registeredWidgets: [],
     };
   }
@@ -62,15 +65,47 @@ export default class HomePage extends React.Component {
     });
   };
 
+  toggleWidgetLock = () => {
+    const { widgetsLocked } = this.state;
+
+    if (widgetsLocked) {
+      this.grid.enable();
+    } else {
+      this.grid.disable();
+    }
+
+    this.setState({ widgetsLocked: !widgetsLocked });
+  };
+
+  hideEditor = () => {
+    this.setState({ hideEditor: true });
+  };
+
+  handleChangeTheme = () => {
+    const currentTheme = document.documentElement.className;
+    document.documentElement.className = '';
+
+    if (currentTheme === 'theme-light') {
+      document.documentElement.classList.add(`theme-dark`);
+    } else {
+      document.documentElement.classList.add(`theme-light`);
+    }
+  };
+
   renderWidgets = () => {
-    const { widgets } = this.state;
+    const { widgets, widgetsLocked } = this.state;
     // const widgetsCopy = widgets.concat();
 
     return widgets.map(widget => {
       if (widget.type === 'image') {
         return (
-          <div id={widget.id} ref={r => this.registerWidget(r, widget.id)}>
-            <Image />
+          <div
+            id={widget.id}
+            gs-w={WIDGET_DEFAULT_HEIGHT}
+            gs-h={WIDGET_DEFAULT_HEIGHT}
+            ref={r => this.registerWidget(r, widget.id)}
+          >
+            <Image editing={!widgetsLocked} />
           </div>
         );
       }
@@ -78,12 +113,28 @@ export default class HomePage extends React.Component {
   };
 
   render() {
+    const { widgetsLocked, hideEditor } = this.state;
     return (
       <div className="HomeContainer">
         <div className="grid-stack">{this.renderWidgets()}</div>
-        <Button className="addWidget" onClick={this.addWidget}>
-          Add Widget
-        </Button>
+        <div style={hideEditor ? { display: 'none' } : { display: 'block' }}>
+          <Button className="hideEditor" onClick={this.hideEditor}>
+            {' '}
+            Hide Editor
+          </Button>
+          <Button className="addWidget" onClick={this.addWidget}>
+            Add Widget
+          </Button>
+          <Button className="lockWidget" onClick={this.toggleWidgetLock}>{`${
+            widgetsLocked ? 'Unlock Widgets' : 'Lock Widgets'
+          }`}</Button>
+          <Button
+            style={{ position: 'absolute', bottom: 10, right: 10 }}
+            onClick={this.handleChangeTheme}
+          >
+            Change Theme
+          </Button>
+        </div>
       </div>
     );
   }
