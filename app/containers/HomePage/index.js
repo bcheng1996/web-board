@@ -8,7 +8,20 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { makeSelectLocked, makeSelectMode } from './selectors';
+import { toggleLock } from './actions';
+
+import Board from '../Board';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
 import { GridStack } from 'gridstack';
 import Image from '../../components/Image';
 import 'gridstack/dist/gridstack.min.css';
@@ -17,7 +30,7 @@ import { WIDGET_DEFAULT_HEIGHT } from './constants';
 import 'gridstack/dist/h5/gridstack-dd-native';
 import './style.scss';
 
-export default class HomePage extends React.Component {
+class HomePage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -33,7 +46,7 @@ export default class HomePage extends React.Component {
     this.grid = GridStack.init({ minRow: 3, float: true });
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   getUID = () => {
     const { currId } = this.state;
@@ -113,29 +126,38 @@ export default class HomePage extends React.Component {
   };
 
   render() {
-    const { widgetsLocked, hideEditor } = this.state;
+    const { mode, locked } = this.props;
+    console.log(this.props);
     return (
       <div className="HomeContainer">
-        <div className="grid-stack">{this.renderWidgets()}</div>
-        <div style={hideEditor ? { display: 'none' } : { display: 'block' }}>
-          <Button className="hideEditor" onClick={this.hideEditor}>
-            {' '}
-            Hide Editor
-          </Button>
-          <Button className="addWidget" onClick={this.addWidget}>
-            Add Widget
-          </Button>
-          <Button className="lockWidget" onClick={this.toggleWidgetLock}>{`${
-            widgetsLocked ? 'Unlock Widgets' : 'Lock Widgets'
-          }`}</Button>
-          <Button
-            style={{ position: 'absolute', bottom: 10, right: 10 }}
-            onClick={this.handleChangeTheme}
-          >
-            Change Theme
-          </Button>
-        </div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <ColorLensIcon />
+            </IconButton>
+            <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => this.props.toggleLock(true)}>
+              {locked ? <LockIcon /> : <LockOpenIcon />}
+            </IconButton>
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <AddIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Board locked={locked} />
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mode: makeSelectMode(state),
+  locked: makeSelectLocked(state)
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLock: () => dispatch(toggleLock())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
