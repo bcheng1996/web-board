@@ -46,7 +46,7 @@ class HomePage extends React.Component {
     this.grid = GridStack.init({ minRow: 3, float: true });
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   getUID = () => {
     const { currId } = this.state;
@@ -130,7 +130,7 @@ class HomePage extends React.Component {
     console.log(this.props);
     return (
       <div className="HomeContainer">
-        <AppBar position="static">
+        <AppBar position="static" color="secondary">
           <Toolbar>
             <IconButton edge="start" color="inherit" aria-label="menu">
               <ColorLensIcon />
