@@ -6,17 +6,14 @@ import { initialState } from './reducer';
  */
 const selectHomePage = state => state.homePage || initialState;
 
+const makeSelectMode = createSelector(
+  selectHomePage,
+  homePageState => homePageState.mode,
+);
 
-const makeSelectMode =
-    createSelector(
-        selectHomePage,
-        homePageState => homePageState.mode
-    );
-
-const makeSelectLocked =
-    createSelector(
-        selectHomePage,
-        homePageState => homePageState.locked
-    );
+const makeSelectLocked = createSelector(
+  selectHomePage,
+  homePageState => homePageState.locked,
+);
 
 export { selectHomePage, makeSelectMode, makeSelectLocked };

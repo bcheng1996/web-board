@@ -9,10 +9,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { makeSelectLocked, makeSelectMode } from './selectors';
-import { toggleLock } from './actions';
 
-import Board from '../Board';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -23,6 +20,9 @@ import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import { GridStack } from 'gridstack';
+import Board from '../Board';
+import { toggleLock } from './actions';
+import { makeSelectLocked, makeSelectMode } from './selectors';
 import Image from '../../components/Image';
 import 'gridstack/dist/gridstack.min.css';
 
@@ -46,7 +46,7 @@ class HomePage extends React.Component {
     this.grid = GridStack.init({ minRow: 3, float: true });
   }
 
-  componentDidUpdate() { }
+  componentDidUpdate() {}
 
   getUID = () => {
     const { currId } = this.state;
@@ -135,7 +135,12 @@ class HomePage extends React.Component {
             <IconButton edge="start" color="inherit" aria-label="menu">
               <ColorLensIcon />
             </IconButton>
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => this.props.toggleLock(true)}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => this.props.toggleLock(true)}
+            >
               {locked ? <LockIcon /> : <LockOpenIcon />}
             </IconButton>
             <IconButton edge="start" color="inherit" aria-label="menu">
@@ -149,15 +154,16 @@ class HomePage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   mode: makeSelectMode(state),
-  locked: makeSelectLocked(state)
+  locked: makeSelectLocked(state),
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleLock: () => dispatch(toggleLock())
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  toggleLock: () => dispatch(toggleLock()),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomePage);
