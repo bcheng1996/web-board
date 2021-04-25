@@ -1,36 +1,17 @@
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import ColorLensIcon from '@material-ui/icons/ColorLens';
 import { GridStack } from 'gridstack';
-import Board from '../Board';
-import { toggleLock } from './actions';
-import { makeSelectLocked, makeSelectMode } from './selectors';
+import { makeSelectLocked } from '../HomePage/selectors';
 import Image from '../../components/Image';
 import 'gridstack/dist/gridstack.min.css';
 
 import { WIDGET_DEFAULT_HEIGHT } from './constants';
 import 'gridstack/dist/h5/gridstack-dd-native';
-import './style.scss';
+// import './style.scss';
 
-class HomePage extends React.Component {
+class Board extends React.Component {
   constructor(props) {
     super(props);
 
@@ -46,7 +27,13 @@ class HomePage extends React.Component {
     this.grid = GridStack.init({ minRow: 3, float: true });
   }
 
-  componentDidUpdate() { }
+  componentDidUpdate() {
+    if (!this.props.locked) {
+      this.grid.enable();
+    } else {
+      this.grid.disable();
+    }
+  }
 
   getUID = () => {
     const { currId } = this.state;
@@ -126,44 +113,35 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const { mode, locked } = this.props;
-    console.log(this.props);
+    const { widgetsLocked, hideEditor } = this.state;
+
     return (
-      <div className="HomeContainer">
-        <AppBar position="static" color="secondary">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <ColorLensIcon />
-            </IconButton>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => this.props.toggleLock(true)}
-            >
-              {locked ? <LockIcon /> : <LockOpenIcon />}
-            </IconButton>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <AddIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Board locked={locked} />
+      <div className="BoardContainer">
+        <div className="grid-stack">{this.renderWidgets()}</div>
+        <div style={hideEditor ? { display: 'none' } : { display: 'block' }}>
+          <Button className="hideEditor" onClick={this.hideEditor}>
+            {' '}
+            Hide Editor
+          </Button>
+          <Button className="addWidget" onClick={this.addWidget}>
+            Add Widget
+          </Button>
+
+          <Button
+            style={{ position: 'absolute', bottom: 10, right: 10 }}
+            onClick={this.handleChangeTheme}
+          >
+            Change Theme
+          </Button>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  mode: makeSelectMode(state),
-  locked: makeSelectLocked(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  toggleLock: () => dispatch(toggleLock()),
-});
+const mapStateToProps = state => ({});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
-)(HomePage);
+  {},
+)(Board);

@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <div>
-      <ColorPicker onChangeColor={handleChangeTheme} />
+      {/* <ColorPicker onChangeColor={handleChangeTheme} /> */}
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
